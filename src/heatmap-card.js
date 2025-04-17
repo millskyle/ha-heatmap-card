@@ -63,9 +63,14 @@ export class HeatmapCard extends LitElement {
                             </tr>
                         </thead>
                         <tbody>
-                    ${this.grid.map((entry, row) =>
-                        html`<tr>
-                            <td class="hm-row-title">${entry.date}</td>
+                    ${this.grid.map((entry, row) => {
+                        const rowHeight = parseFloat(this.config.row_height); // '24px' -> 24
+                        const interval = Math.round(1 / rowHeight); // number of rows per label
+
+                        const showTitle = row % interval === 0;
+                        
+                        return html`<tr style='line-height: ${this.config.row_height};'>
+                            <td class="hm-row-title">${showTitle ? entry.date : ''}</td>
                             ${entry.vals.map((util, idx) => {
                                 var css_class="hm-box";
                                 var r = util;
@@ -80,6 +85,7 @@ export class HeatmapCard extends LitElement {
                                 return html`<td @click="${this.toggle_tooltip}" class="${css_class}" data-val="${util}" data-row="${row}" data-col="${idx}" style="color: ${col}"></td>`
                             })}
                         </tr>`
+}
                     )}
                         </tbody>
                     </table>
@@ -429,6 +435,7 @@ export class HeatmapCard extends LitElement {
             'days': (config.days ?? 21),
             'entity': config.entity,
             'scale': config.scale,
+            'row_height': (config.row_height ?? 1),
             'data': (config.data ?? {}),
             'display': (config.display ?? {})
         };
