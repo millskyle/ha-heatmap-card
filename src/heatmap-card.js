@@ -66,7 +66,6 @@ export class HeatmapCard extends LitElement {
                     ${this.grid.map((entry, row) => {
                         const rowHeight = parseFloat(this.config.row_height); // '24px' -> 24
                         const interval = Math.round(1 / rowHeight); // number of rows per label
-
                         const showTitle = row % interval === 0;
                         
                         return html`<tr style='line-height: ${this.config.row_height};'>
