@@ -326,7 +326,15 @@ export class HeatmapCard extends LitElement {
         return Math.min(...vals);
     }
 
-    // Todo: cleanup and comment.
+    // Utility function to roll the grid data based on start_hour
+    rollGrid(grid, startHour) {
+        return grid.map(row => {
+            const rolledVals = row.vals.slice(startHour).concat(row.vals.slice(0, startHour));
+            return { ...row, vals: rolledVals };
+        });
+    }
+
+    // Modify calculate_measurement_values to roll the grid
     calculate_measurement_values(consumerData) {
         var grid = [];
         var gridTemp = [];
@@ -344,26 +352,14 @@ export class HeatmapCard extends LitElement {
             gridTemp[hour] = entry.mean;
             prevDate = dateRep;
         }
-        /*
-            For the last date in the series, remove any entries that we didn't get from
-            Home Assistant. This would typically be hours set in the future.
-        */
         gridTemp.splice(hour + 1);
-        return grid.reverse();
+        grid = grid.reverse();
+
+        // Roll the grid based on start_hour
+        return this.rollGrid(grid, this.config.start_hour);
     }
 
-    // Todo: cleanup and comment.
-    /*
-        Notable difference vs. calculate_measurement_values() - we fill missing values with 0 rather
-        than null. For measurement values, we want to highlight gaps. For total_increasing ones, gaps
-        are common with PV inverters, and it makes more sense to show this as 0 rather than potentially
-        a lot of gaps in the graph that are really zero values.
-
-        While this is something that the inverter integrations should be handling, it's an imperfect
-        world.
-
-        Will likely make this configurable at some point.
-    */
+    // Modify calculate_increasing_values to roll the grid
     calculate_increasing_values(consumerData) {
         var grid = [];
         var prev = null;
@@ -381,17 +377,16 @@ export class HeatmapCard extends LitElement {
             }
             if (prev !== null) {
                 var util = (entry.sum - prev).toFixed(2);
-                gridTemp[hour] = util
+                gridTemp[hour] = util;
             }
             prev = entry.sum;
             prevDate = dateRep;
         }
-        /*
-            For the last date in the series, remove any entries that we didn't get from
-            Home Assistant. This would typically be hours set in the future.
-        */
         gridTemp.splice(hour + 1);
-        return grid.reverse();
+        grid = grid.reverse();
+
+        // Roll the grid based on start_hour
+        return this.rollGrid(grid, this.config.start_hour);
     }
 
     populate_meta(hass) {
@@ -435,6 +430,7 @@ export class HeatmapCard extends LitElement {
             'entity': config.entity,
             'scale': config.scale,
             'row_height': (config.row_height ?? 1),
+            'start_hour': (config.start_hour ?? 0),
             'data': (config.data ?? {}),
             'display': (config.display ?? {})
         };
