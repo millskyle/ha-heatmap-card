@@ -159,7 +159,7 @@ export class HeatmapCard extends LitElement {
         if (this.selected_element_data) {
             // Todo: See if we can use the precision from the entity here.
             const date = this.grid[this.selected_element_data.row]?.date;
-            const hr = parseInt(this.selected_element_data.col);
+            const hr = (parseInt(this.selected_element_data.col) + this.config.start_hour) % 24; 
             var from = new Date('2022-03-20 00:00:00').setHours(hr);
             var to = new Date('2022-03-20 00:00:00').setHours(hr + 1);
             var rendered_value;
