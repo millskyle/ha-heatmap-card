@@ -375,8 +375,6 @@ export class HeatmapCard extends LitElement {
                 }
             }       
             
-
-            console.log(entry.mean);
             prevDate = dateRep;
         }
         gridTemp.splice(hour + 1);
