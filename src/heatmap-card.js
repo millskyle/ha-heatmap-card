@@ -364,7 +364,9 @@ export class HeatmapCard extends LitElement {
                 grid.push({'date': dateRep, 'nativeDate': start, 'vals': gridTemp});
             }
             
-            val = entry.mean;
+            if (val != 0) {
+                val = entry.mean;
+            }
             gridTemp[hour] = val;
             //override if log_scale
             if (this.config.log_scale) {
