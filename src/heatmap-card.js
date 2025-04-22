@@ -69,7 +69,7 @@ export class HeatmapCard extends LitElement {
                         const showTitle = row % interval === 0;
                         
                         return html`<tr style='line-height: ${this.config.row_height};'>
-                            <td class="hm-row-title">${showTitle ? entry.date : ''}</td>
+                            <td class="hm-row-title">${showTitle ? entry.date : '&nbsp;'}</td>
                             ${entry.vals.map((util, idx) => {
                                 var css_class="hm-box";
                                 var r = util;
@@ -490,7 +490,7 @@ export class HeatmapCard extends LitElement {
                 font-size: 70%;
             }
             tr {
-                line-height: 1.1;
+               
                 overflow: hidden;
                 font-size: 90%;
             }
