@@ -327,25 +327,25 @@ export class HeatmapCard extends LitElement {
     }
 
     // Utility function to roll the grid data based on start_hour
-    rollGrid(grid, startHour) {
-        const hoursPerDay = 24;
+    // rollGrid(grid, startHour) {
+    //     const hoursPerDay = 24;
 
-        return grid.map((row, index) => {
-            // Shift the row's values based on startHour
-            const shiftedVals = row.vals.slice(startHour).concat(row.vals.slice(0, startHour));
+    //     return grid.map((row, index) => {
+    //         // Shift the row's values based on startHour
+    //         const shiftedVals = row.vals.slice(startHour).concat(row.vals.slice(0, startHour));
 
-            // If this is not the first row, prepend the wrapped values to the previous day's row
-            if (startHour > 0 && index > 0) {
-                grid[index - 1].vals = grid[index - 1].vals.concat(row.vals.slice(0, startHour));
-            }
+    //         // If this is not the first row, prepend the wrapped values to the previous day's row
+    //         if (startHour > 0 && index > 0) {
+    //             grid[index - 1].vals = grid[index - 1].vals.concat(row.vals.slice(0, startHour));
+    //         }
 
-            // Return the updated row with shifted values
-            return {
-                ...row,
-                vals: shiftedVals,
-            };
-        });
-    }
+    //         // Return the updated row with shifted values
+    //         return {
+    //             ...row,
+    //             vals: shiftedVals,
+    //         };
+    //     });
+    // }
 
     // Modify calculate_measurement_values to roll the grid
     calculate_measurement_values(consumerData) {
@@ -369,7 +369,7 @@ export class HeatmapCard extends LitElement {
         grid = grid.reverse();
 
         // Roll the grid based on start_hour
-        return this.rollGrid(grid, this.config.start_hour);
+        return grid; //this.rollGrid(grid, this.config.start_hour);
     }
 
     // Modify calculate_increasing_values to roll the grid
@@ -399,7 +399,7 @@ export class HeatmapCard extends LitElement {
         grid = grid.reverse();
 
         // Roll the grid based on start_hour
-        return this.rollGrid(grid, this.config.start_hour);
+        return grid; //this.rollGrid(grid, this.config.start_hour);
     }
 
     populate_meta(hass) {
