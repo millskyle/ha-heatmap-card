@@ -466,6 +466,7 @@ export class HeatmapCard extends LitElement {
             'scale': config.scale,
             'row_height': (config.row_height ?? 1),
             'start_hour': (config.start_hour ?? 0),
+            'log_scale': (config.log_scale ?? false),
             'data': (config.data ?? {}),
             'display': (config.display ?? {})
         };
