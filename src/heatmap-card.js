@@ -348,7 +348,6 @@ export class HeatmapCard extends LitElement {
         var gridTemp = [];
         var prevDate = null;
         var hour;
-        var val; 
         for (const entry of consumerData) {
             const start = new Date(entry.start);
             //add a timedelta of start_hours hours:
@@ -364,8 +363,7 @@ export class HeatmapCard extends LitElement {
                 grid.push({'date': dateRep, 'nativeDate': start, 'vals': gridTemp});
             }
             
-            val = entry.mean;
-            gridTemp[hour] = val;
+            gridTemp[hour] = entry.mean;
             prevDate = dateRep;
         }
         gridTemp.splice(hour + 1);
