@@ -383,7 +383,7 @@ export class HeatmapCard extends LitElement {
                 gridTemp = Array(24).fill(null);
                 grid.push({'date': dateRep, 'nativeDate': start, 'vals': gridTemp});
             }
-            gridTemp[hour] = Math.log(entry.mean) ? this.config.log_scale: entry.mean;
+            gridTemp[hour] = this.config.log_scale ? Math.log(entry.mean) : entry.mean;
             prevDate = dateRep;
         }
         gridTemp.splice(hour + 1);
