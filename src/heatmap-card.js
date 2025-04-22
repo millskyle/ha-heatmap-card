@@ -342,28 +342,7 @@ export class HeatmapCard extends LitElement {
         return Math.min(...vals);
     }
 
-   // Utility function to roll the grid data based on start_hour
-    rollGrid(grid, startHour) {
-        const hoursPerDay = 24;
-
-        return grid.map((row, index) => {
-            // Shift the row's values based on startHour
-            const shiftedVals = row.vals.slice(startHour).concat(row.vals.slice(0, startHour));
-
-            // If this is not the first row, prepend the wrapped values to the previous day's row
-            if (startHour > 0 && index > 0) {
-                grid[index - 1].vals = grid[index - 1].vals.concat(row.vals.slice(0, startHour));
-            }
-
-            // Return the updated row with shifted values
-            return {
-                ...row,
-                vals: shiftedVals,
-            };
-        });
-    }
-
-    // Modify calculate_measurement_values to roll the grid
+    
     calculate_measurement_values(consumerData) {
         var grid = [];
         var gridTemp = [];
@@ -384,6 +363,7 @@ export class HeatmapCard extends LitElement {
                 grid.push({'date': dateRep, 'nativeDate': start, 'vals': gridTemp});
             }
             gridTemp[hour] = this.config.log_scale ? Math.log(entry.mean) : entry.mean;
+            console.log(entry.mean);
             prevDate = dateRep;
         }
         gridTemp.splice(hour + 1);
