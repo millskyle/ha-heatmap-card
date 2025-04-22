@@ -117,7 +117,7 @@ Slightly modified by setting the minimum to -60\xB0C, instead of -90\xB0C.</p>`}
                 font-size: 70%;
             }
             tr {
-                line-height: 1.1;
+               
                 overflow: hidden;
                 font-size: 90%;
             }
