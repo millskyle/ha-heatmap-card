@@ -364,19 +364,8 @@ export class HeatmapCard extends LitElement {
                 grid.push({'date': dateRep, 'nativeDate': start, 'vals': gridTemp});
             }
             
-            if (val != 0) {
-                val = entry.mean;
-            }
+            val = entry.mean;
             gridTemp[hour] = val;
-            //override if log_scale
-            if (this.config.log_scale) {
-                if (val <= 0) {
-                    gridTemp[hour] = null;
-                } else  {
-                    gridTemp[hour] = this.config.log_scale ? Math.log(val) : val;
-                }
-            }       
-            
             prevDate = dateRep;
         }
         gridTemp.splice(hour + 1);
@@ -459,7 +448,6 @@ export class HeatmapCard extends LitElement {
             'scale': config.scale,
             'row_height': (config.row_height ?? 1),
             'start_hour': (config.start_hour ?? 0),
-            'log_scale': (config.log_scale ?? false),
             'data': (config.data ?? {}),
             'display': (config.display ?? {})
         };
