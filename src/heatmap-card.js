@@ -99,17 +99,32 @@ export class HeatmapCard extends LitElement {
     /* Deal with 24h vs 12h time */
     date_table_headers() {
         if (this.myhass.locale.time_format === '12') {
+
+
+            const startHour = this.config.start_hour || 0;
+            const hours = Array.from({ length: 24 }, (_, i) => (startHour + i) % 24);
             return html`
-                <th>12<br/>AM</th><th>·</th><th>·</th><th>·</th><th>4<br/>AM</th><th>·</th><th>·</th><th>·</th>
-                <th>8<br/>AM</th><th>·</th><th>·</th><th>·</th><th>12<br/>PM</th><th>·</th><th>·</th><th>·</th>
-                <th>4<br/>PM</th><th>·</th><th>·</th><th>·</th><th>8<br/>PM</th><th>·</th><th>·</th><th>11<br/>PM</th>
-            `            
+                ${hours.map((hour) => {
+                    const isMajor = hour % 4 === 0; // Major tick every 4 hours
+                    const period = this.myhass.locale.time_format === '12' 
+                        ? (hour === 0 ? '12<br/>AM' : hour < 12 ? `${hour}<br/>AM` : hour === 12 ? '12<br/>PM' : `${hour - 12}<br/>PM`)
+                        : `${hour.toString().padStart(2, '0')}`;
+                    return html`
+                        <th>${isMajor ? period : '·'}</th>
+                    `;
+                })}
+            `;
         } else {
+            const startHour = this.config.start_hour || 0;
+            const hours = Array.from({ length: 24 }, (_, i) => (startHour + i) % 24);
             return html`
-                <th>00</th><th>·</th><th>·</th><th>·</th><th>04</th><th>·</th><th>·</th><th>·</th>
-                <th>08</th><th>·</th><th>·</th><th>·</th><th>12</th><th>·</th><th>·</th><th>·</th>
-                <th>16</th><th>·</th><th>·</th><th>·</th><th>20</th><th>·</th><th>·</th><th>23</th>
-            `
+                ${hours.map((hour) => {
+                    const isMajor = hour % 4 === 0; // Major tick every 4 hours
+                    return html`
+                        <th>${isMajor ? hour.toString().padStart(2, '0') : '·'}</th>
+                    `;
+                })}
+            `;
         }
     }
 
@@ -386,6 +401,7 @@ export class HeatmapCard extends LitElement {
         var hour;
         for (const entry of consumerData) {
             const start = new Date(entry.start);
+            start.setHours(start.getHours() + this.config.start_hour);           
             hour = start.getHours();
             const dateRep = start.toLocaleDateString(this.meta.language, {month: 'short', day: '2-digit'});
 
