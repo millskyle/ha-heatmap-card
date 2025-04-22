@@ -60,7 +60,7 @@ Slightly modified by setting the minimum to -60\xB0C, instead of -90\xB0C.</p>`}
                         </thead>
                         <tbody>
                     ${this.grid.map((c,p)=>{let m=parseFloat(this.config.row_height),v=Math.round(1/m),A=p%v===0;return ee`<tr style='line-height: ${this.config.row_height};'>
-                            <td class="hm-row-title">${A?c.date:"\xA0"}</td>
+                            <td class="hm-row-title">${A?c.date:"x\xA0"}</td>
                             ${c.vals.map((F,T)=>{var G="hm-box",I=F;if(I===null&&(G+=" null"),this.meta.scale.type==="relative"){let L=this.meta.data.max-this.meta.data.min;I=(F-this.meta.data.min)/L,I<0&&(I=0),I>1&&(I=1)}let d=this.meta.scale.gradient(I);return ee`<td @click="${this.toggle_tooltip}" class="${G}" data-val="${F}" data-row="${p}" data-col="${T}" style="color: ${d}"></td>`})}
                         </tr>`})}
                         </tbody>
