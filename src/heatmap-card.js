@@ -355,7 +355,11 @@ export class HeatmapCard extends LitElement {
         var hour;
         for (const entry of consumerData) {
             const start = new Date(entry.start);
-            hour = (start.getHours() + this.config.start_hour) % 24;
+            //add a timedelta of start_hours hours:
+            start.setHours(start.getHours() + this.config.start_hour);           
+
+            
+            
             const dateRep = start.toLocaleDateString(this.meta.language, {month: 'short', day: '2-digit'});
 
             if (dateRep !== prevDate && prevDate !== null) {
