@@ -367,11 +367,13 @@ export class HeatmapCard extends LitElement {
             val = entry.mean;
             gridTemp[hour] = val;
             //override if log_scale
-            if (val <= 0 && this.config.log_scale) {
-                gridTemp[hour] = null;
-            } else {
-                gridTemp[hour] = this.config.log_scale ? Math.log(val) : val;
-            }
+            if (this.config.log_scale) {
+                if (val <= 0) {
+                    gridTemp[hour] = null;
+                } else  {
+                    gridTemp[hour] = this.config.log_scale ? Math.log(val) : val;
+                }
+            }       
             
 
             console.log(entry.mean);
